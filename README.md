@@ -10,34 +10,77 @@ curl -L https://raw.githubusercontent.com/4n4k1n/lvl3-cloud/refs/heads/main/scri
 ```
 ## Container Diagram
 ```mermaid
-C4Component
-    title IaaS Foundations with OpenStack architecture diagram
-    
-    Container_Boundary(openstack, "OpenStack Services") {
-        Component(keystone, "Keystone", "Identity")
-        Component(nova, "Nova", "Compute")
-        Component(neutron, "Neutron", "Network")
-        Component(glance, "Glance", "Image")
-        Component(cinder, "Cinder", "Block Storage")
-        Component(placement, "Placement", "Resource Tracking")
-    }
-    
-    Container_Boundary(infra, "Infrastructure") {
-        ComponentDb(mysql, "MySQL", "State Storage")
-        Component(rabbitmq, "RabbitMQ", "Message Queue")
-        ComponentDb(etcd, "etcd", "KV Store")
-    }
-    
-    Container_Boundary(hypervisor, "Virtualization") {
-        Component(libvirt, "Libvirt/KVM", "Hypervisor")
-        Component(ovs, "Open vSwitch", "Virtual Networking")
-    }
-    
-    
-    Rel(nova, keystone, "Authenticates")
-    Rel(nova, rabbitmq, "Async Messaging")
-    Rel(nova, mysql, "Persists State")
-    Rel(nova, glance, "Fetches Images")
-    Rel(nova, libvirt, "Manages VMs")
-    Rel(neutron, ovs, "Configures Networks")
+flowchart TB
+ subgraph Setup["Setup Script"]
+    direction TB
+        CreateUser["Create stack user"]
+        Start(["Start"])
+        SetPerms["Set permissions"]
+        AddSudo["Add to sudoers"]
+        CloneRepos["Clone repos"]
+        CopyConfig["Copy local.config"]
+        Chown["Change ownership"]
+        RunStack["Run stack.sh"]
+        Tests{"Tests pass?"}
+        Deploy["Deploy Services"]
+        Error(["Failed"])
+  end
+ subgraph OpenStack["OpenStack Services"]
+    direction TB
+        Keystone["Keystone - Identity"]
+        Nova["Nova - Compute"]
+        Neutron["Neutron - Network"]
+        Glance["Glance - Image"]
+        Cinder["Cinder - Block Storage"]
+        Placement["Placement - Resource Tracking"]
+  end
+ subgraph Infra["Infrastructure"]
+    direction TB
+        MySQL[("MySQL")]
+        RabbitMQ["RabbitMQ"]
+        Etcd[("etcd")]
+  end
+ subgraph Hypervisor["Virtualization"]
+    direction TB
+        Libvirt["Libvirt/KVM"]
+        OVS["Open vSwitch"]
+  end
+    Start --> CreateUser
+    CreateUser --> SetPerms
+    SetPerms --> AddSudo
+    AddSudo --> CloneRepos
+    CloneRepos --> CopyConfig
+    CopyConfig --> Chown
+    Chown --> RunStack
+    RunStack --> Tests
+    Tests -- Yes --> Deploy
+    Tests -- No --> Error
+    Deploy --> Keystone & Nova & Neutron
+    Nova --> Keystone & RabbitMQ & MySQL & Glance & Libvirt
+    Neutron --> OVS & MySQL
+    Glance --> MySQL
+    Cinder --> MySQL
+
+    linkStyle 0 stroke:#FF0000
+    linkStyle 1 stroke:#FF0000
+    linkStyle 2 stroke:#FF0000
+    linkStyle 3 stroke:#FF0000
+    linkStyle 4 stroke:#FF0000
+    linkStyle 5 stroke:#FF0000
+    linkStyle 6 stroke:#FF0000
+    linkStyle 7 stroke:#FF0000
+    linkStyle 8 stroke:#FF0000
+    linkStyle 9 stroke:#FF0000
+    linkStyle 10 stroke:#FF0000
+    linkStyle 11 stroke:#FF0000
+    linkStyle 12 stroke:#FF0000
+    linkStyle 13 stroke:#FF0000
+    linkStyle 14 stroke:#FF0000
+    linkStyle 15 stroke:#FF0000
+    linkStyle 16 stroke:#FF0000
+    linkStyle 17 stroke:#FF0000
+    linkStyle 18 stroke:#FF0000
+    linkStyle 19 stroke:#FF0000
+    linkStyle 20 stroke:#FF0000
+    linkStyle 21 stroke:#FF0000
 ```
