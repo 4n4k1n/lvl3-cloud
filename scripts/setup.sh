@@ -30,6 +30,12 @@ sudo chown stack:stack /opt/stack/devstack/local.conf
 # Run stack.sh as stack user
 sudo -u stack /opt/stack/devstack/stack.sh
 
+echo "\n\n\n"
+
 # run unit tests
 sudo -u stack /opt/stack/devstack.run_tests.sh
+
+echo "\n\n\n"
+
+/opt/stack/scripts/create_demo_vm.sh
 
