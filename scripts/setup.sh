@@ -25,7 +25,7 @@ sudo -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devsta
 
 # Copy local.conf template
 echo "Copying local.conf template..."
-sudo -u stack cp /opt/stack/lvl3-cloud/local.config.template /opt/stack/devstack/local.conf
+sudo -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf
 
 # Run stack.sh as stack user
 echo "Running stack.sh (this will take 15-30 minutes)..."
@@ -35,9 +35,9 @@ echo ""
 echo ""
 echo "================================"
 
-# Run unit tests
-echo "Running unit tests..."
-sudo -u stack /opt/stack/lvl3-cloud/run_tests.sh
+# Run unit tests (script not yet implemented)
+# echo "Running unit tests..."
+# sudo -u stack /opt/stack/lvl3-cloud/run_tests.sh
 
 echo ""
 echo ""
