@@ -1,5 +1,4 @@
 #!/bin/bash
-current_dir=$(pwd)
 
 # Create stack user
 sudo useradd -s /bin/bash -d /opt/stack -m stack
@@ -19,10 +18,11 @@ fi
 echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
 
 # Clone devstack as stack user
+sudo -u stack git https://github.com/4n4k1n/lvl3-cloud.git /opt/stack
 sudo -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack
 
 # Copy local.conf template
-sudo cp ${current_dir}/local.config.template /opt/stack/devstack/local.conf
+sudo cp /opt/stack/local.config.template /opt/stack/devstack/local.conf
 
 # Change ownership to stack user
 sudo chown stack:stack /opt/stack/devstack/local.conf
@@ -32,6 +32,4 @@ sudo -u stack /opt/stack/devstack/stack.sh
 
 # run unit tests
 sudo -u stack /opt/stack/devstack.run_tests.sh
-
-sudo -u stack cp ${current_dir}/create_demo_vm.sh /opt/stack/devstack/create_demo_vm.sh
 
