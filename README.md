@@ -6,8 +6,7 @@
 2. Create your `local.config.template` file (see example below)
 3. Run the setup script:
 ```bash
-chmod +x setup.sh
-./setup.sh
+curl -L https://raw.githubusercontent.com/4n4k1n/lvl3-cloud/refs/heads/main/scripts/setup.sh | bash
 ```
 ## Container Diagram
 ```mermaid
