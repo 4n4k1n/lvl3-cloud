@@ -34,5 +34,4 @@ sudo -u stack /opt/stack/devstack/stack.sh
 sudo -u stack /opt/stack/devstack.run_tests.sh
 
 sudo -u stack cp ${current_dir}/create_demo_vm.sh /opt/stack/devstack/create_demo_vm.sh
-sudo -u stack cp ${current_dir}/remove_demo_vm.sh /opt/stack/devstack/remove_demo_vm.sh
 
