@@ -23,9 +23,15 @@ sudo -u stack git clone https://github.com/4n4k1n/lvl3-cloud.git /opt/stack/lvl3
 echo "Cloning devstack repository..."
 sudo -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack
 
-# Copy local.conf template
-echo "Copying local.conf template..."
+# Detect host IP (first IP from hostname -I)
+echo "Detecting host IP address..."
+HOST_IP=$(hostname -I | awk '{print $1}')
+echo "Using HOST_IP: $HOST_IP"
+
+# Copy local.conf template and replace HOST_IP
+echo "Copying and configuring local.conf template..."
 sudo -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf
+sudo sed -i "s/^HOST_IP=.*/HOST_IP=$HOST_IP/" /opt/stack/devstack/local.conf
 
 # Run stack.sh as stack user
 echo "Running stack.sh (this will take 15-30 minutes)..."
