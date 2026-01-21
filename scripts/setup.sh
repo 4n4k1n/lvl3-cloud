@@ -41,9 +41,9 @@ echo ""
 echo ""
 echo "================================"
 
-# Run unit tests (script not yet implemented)
-# echo "Running unit tests..."
-# sudo -u stack /opt/stack/lvl3-cloud/run_tests.sh
+Run unit tests (script not yet implemented)
+echo "Running unit tests..."
+cd /opt/stack/devstack && sudo -u stack ./run_tests.sh
 
 echo ""
 echo ""
