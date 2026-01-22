@@ -80,30 +80,30 @@ flowchart TB
     Glance -->|data| MySQL
     Placement -->|data| MySQL
 
-    linkStyle 0 stroke:#FF0000
-    linkStyle 1 stroke:#FF0000
-    linkStyle 2 stroke:#FF0000
-    linkStyle 3 stroke:#FF0000
-    linkStyle 4 stroke:#FF0000
-    linkStyle 5 stroke:#FF0000
-    linkStyle 6 stroke:#FF0000
-    linkStyle 7 stroke:#FF0000
-    linkStyle 8 stroke:#FF0000
-    linkStyle 9 stroke:#FF0000
-    linkStyle 10 stroke:#FF0000
-    linkStyle 11 stroke:#FF0000
-    linkStyle 12 stroke:#FF0000
-    linkStyle 13 stroke:#FF0000
-    linkStyle 14 stroke:#FF0000
-    linkStyle 15 stroke:#FF0000
-    linkStyle 16 stroke:#FF0000
-    linkStyle 17 stroke:#FF0000
-    linkStyle 18 stroke:#FF0000
-    linkStyle 19 stroke:#FF0000
-    linkStyle 20 stroke:#FF0000
-    linkStyle 21 stroke:#FF0000
-    linkStyle 22 stroke:#FF0000
-    linkStyle 23 stroke:#FF0000
-    linkStyle 24 stroke:#FF0000
-    linkStyle 25 stroke:#FF0000
+    linkStyle 0 stroke:#FFFFFF
+    linkStyle 1 stroke:#FFFFFF
+    linkStyle 2 stroke:#FFFFFF
+    linkStyle 3 stroke:#FFFFFF
+    linkStyle 4 stroke:#FFFFFF
+    linkStyle 5 stroke:#FFFFFF
+    linkStyle 6 stroke:#FFFFFF
+    linkStyle 7 stroke:#FFFFFF
+    linkStyle 8 stroke:#FFFFFF
+    linkStyle 9 stroke:#FFFFFF
+    linkStyle 10 stroke:#FFFFFF
+    linkStyle 11 stroke:#FFFFFF
+    linkStyle 12 stroke:#FFFFFF
+    linkStyle 13 stroke:#FFFFFF
+    linkStyle 14 stroke:#FFFFFF
+    linkStyle 15 stroke:#FFFFFF
+    linkStyle 16 stroke:#FFFFFF
+    linkStyle 17 stroke:#FFFFFF
+    linkStyle 18 stroke:#FFFFFF
+    linkStyle 19 stroke:#FFFFFF
+    linkStyle 20 stroke:#FFFFFF
+    linkStyle 21 stroke:#FFFFFF
+    linkStyle 22 stroke:#FFFFFF
+    linkStyle 23 stroke:#FFFFFF
+    linkStyle 24 stroke:#FFFFFF
+    linkStyle 25 stroke:#FFFFFF
 ```
