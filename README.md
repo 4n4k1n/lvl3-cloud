@@ -13,32 +13,40 @@ curl -L https://raw.githubusercontent.com/4n4k1n/lvl3-cloud/refs/heads/main/scri
 flowchart TB
  subgraph Setup["Setup Script"]
     direction TB
-        CreateUser["Create stack user"]
         Start(["Start"])
+        CreateUser["Create stack user"]
         SetPerms["Set permissions"]
         AddSudo["Add to sudoers"]
         CloneRepos["Clone repos"]
-        CopyConfig["Copy local.config"]
-        Chown["Change ownership"]
+        CopyConfig["Copy local.conf"]
         RunStack["Run stack.sh"]
         Tests{"Tests pass?"}
         Deploy["Deploy Services"]
         Error(["Failed"])
   end
+ subgraph UI["User Interface"]
+    direction TB
+        Horizon["Horizon - Dashboard"]
+  end
  subgraph OpenStack["OpenStack Services"]
     direction TB
         Keystone["Keystone - Identity"]
         Nova["Nova - Compute"]
-        Neutron["Neutron - Network"]
         Glance["Glance - Image"]
-        Cinder["Cinder - Block Storage"]
         Placement["Placement - Resource Tracking"]
+  end
+ subgraph Network["Neutron - Networking"]
+    direction TB
+        QSvc["q-svc - API Server"]
+        QAgt["q-agt - OVS Agent"]
+        QDhcp["q-dhcp - DHCP Agent"]
+        QL3["q-l3 - L3 Agent"]
+        QMeta["q-meta - Metadata Agent"]
   end
  subgraph Infra["Infrastructure"]
     direction TB
         MySQL[("MySQL")]
         RabbitMQ["RabbitMQ"]
-        Etcd[("etcd")]
   end
  subgraph Hypervisor["Virtualization"]
     direction TB
@@ -50,16 +58,18 @@ flowchart TB
     SetPerms --> AddSudo
     AddSudo --> CloneRepos
     CloneRepos --> CopyConfig
-    CopyConfig --> Chown
-    Chown --> RunStack
+    CopyConfig --> RunStack
     RunStack --> Tests
     Tests -- Yes --> Deploy
     Tests -- No --> Error
-    Deploy --> Keystone & Nova & Neutron
-    Nova --> Keystone & RabbitMQ & MySQL & Glance & Libvirt
-    Neutron --> OVS & MySQL
+    Deploy --> Horizon
+    Horizon --> Keystone & Nova & Glance & QSvc
+    Nova --> Keystone & RabbitMQ & MySQL & Glance & Placement & Libvirt
+    QSvc --> MySQL & RabbitMQ
+    QAgt --> OVS
+    QL3 --> OVS
     Glance --> MySQL
-    Cinder --> MySQL
+    Placement --> MySQL
 
     linkStyle 0 stroke:#FF0000
     linkStyle 1 stroke:#FF0000
@@ -83,4 +93,8 @@ flowchart TB
     linkStyle 19 stroke:#FF0000
     linkStyle 20 stroke:#FF0000
     linkStyle 21 stroke:#FF0000
+    linkStyle 22 stroke:#FF0000
+    linkStyle 23 stroke:#FF0000
+    linkStyle 24 stroke:#FF0000
+    linkStyle 25 stroke:#FF0000
 ```
