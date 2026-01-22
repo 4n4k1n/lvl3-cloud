@@ -62,14 +62,23 @@ flowchart TB
     RunStack --> Tests
     Tests -- Yes --> Deploy
     Tests -- No --> Error
-    Deploy --> Horizon
-    Horizon --> Keystone & Nova & Glance & QSvc
-    Nova --> Keystone & RabbitMQ & MySQL & Glance & Placement & Libvirt
-    QSvc --> MySQL & RabbitMQ
-    QAgt --> OVS
-    QL3 --> OVS
-    Glance --> MySQL
-    Placement --> MySQL
+    Deploy -->|starts| Horizon
+    Horizon -->|auth| Keystone
+    Horizon -->|compute API| Nova
+    Horizon -->|image API| Glance
+    Horizon -->|network API| QSvc
+    Nova -->|auth| Keystone
+    Nova -->|messaging| RabbitMQ
+    Nova -->|data| MySQL
+    Nova -->|images| Glance
+    Nova -->|resources| Placement
+    Nova -->|VMs| Libvirt
+    QSvc -->|data| MySQL
+    QSvc -->|messaging| RabbitMQ
+    QAgt -->|flows| OVS
+    QL3 -->|routing| OVS
+    Glance -->|data| MySQL
+    Placement -->|data| MySQL
 
     linkStyle 0 stroke:#FF0000
     linkStyle 1 stroke:#FF0000
