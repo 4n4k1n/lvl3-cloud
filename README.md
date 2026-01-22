@@ -63,22 +63,22 @@ flowchart TB
     Tests -- Yes --> Deploy
     Tests -- No --> Error
     Deploy -->|starts| Horizon
-    Horizon -->|auth| Keystone
-    Horizon -->|compute API| Nova
-    Horizon -->|image API| Glance
-    Horizon -->|network API| QSvc
-    Nova -->|auth| Keystone
-    Nova -->|messaging| RabbitMQ
-    Nova -->|data| MySQL
-    Nova -->|images| Glance
-    Nova -->|resources| Placement
-    Nova -->|VMs| Libvirt
-    QSvc -->|data| MySQL
-    QSvc -->|messaging| RabbitMQ
-    QAgt -->|flows| OVS
-    QL3 -->|routing| OVS
-    Glance -->|data| MySQL
-    Placement -->|data| MySQL
+    Horizon -->|token auth| Keystone
+    Horizon -->|manage instances| Nova
+    Horizon -->|browse images| Glance
+    Horizon -->|manage networks| QSvc
+    Nova -->|validate tokens| Keystone
+    Nova -->|RPC calls| RabbitMQ
+    Nova -->|instance state| MySQL
+    Nova -->|fetch images| Glance
+    Nova -->|allocate CPU/RAM| Placement
+    Nova -->|spawn VMs| Libvirt
+    QSvc -->|network config| MySQL
+    QSvc -->|agent RPC| RabbitMQ
+    QAgt -->|bridge flows| OVS
+    QL3 -->|NAT/routing| OVS
+    Glance -->|image metadata| MySQL
+    Placement -->|resource inventory| MySQL
 
     linkStyle 0 stroke:#FFFFFF
     linkStyle 1 stroke:#FFFFFF
