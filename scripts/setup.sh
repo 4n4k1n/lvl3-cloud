@@ -41,7 +41,7 @@ echo ""
 echo ""
 echo "================================"
 
-Run unit tests (script not yet implemented)
+#Run unit tests (script not yet implemented)
 echo "Running unit tests..."
 cd /opt/stack/devstack && sudo -u stack ./run_tests.sh
 
