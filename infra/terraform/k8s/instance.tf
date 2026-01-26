@@ -5,7 +5,7 @@ resource "openstack_compute_instance_v2" "k8s_control_plane" {
 	key_pair = "demo-key"
 
 	network {
-		name = "demo-net"
+		uuid = openstack_networking_network_v2.k8s_net.id
 	}
 }
 
@@ -17,6 +17,6 @@ resource "openstack_compute_instance_v2" "k8s_worker" {
 	key_pair = "demo-key"
 
 	network {
-		name = "demo-net"
+		uuid = openstack_networking_network_v2.k8s_net.id
 	}
 }
