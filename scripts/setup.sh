@@ -5,7 +5,7 @@ set -e  # Exit on any error
 
 # Create stack user with home directory
 echo "Creating stack user..."
-sudo useradd -s /bin/bash -d /opt/stack -m stack
+sudo useradd -s /bin/bash -d /opt/stack -m stack 2>/dev/null || true
 
 # Set permissions on /opt/stack
 echo "Setting permissions on /opt/stack..."
@@ -41,12 +41,17 @@ echo ""
 echo ""
 echo "================================"
 
-#Run unit tests (script not yet implemented)
+#Run unit tests
 echo "Running unit tests..."
 cd /opt/stack/devstack && sudo -u stack ./run_tests.sh
+
+# setup cluster
+echo "Setup the k8s cluster..."
+chmod +x /opt/stack/lvl3-cloud/scripts/*
+/opt/stack/lvl3-cloud/scripts/cluster.sh
 
 echo ""
 echo ""
 echo "================================"
-echo "✓ Setup complete!"
+echo "Setup complete!"
 echo "================================"
