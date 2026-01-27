@@ -1,0 +1,32 @@
+- name: disable swap
+  shell: swapoff -a && sed -i '/swap/d' /etc/fstab
+
+- name: install dependencies
+  apt:
+    name: [apt-transport-https, ca-certificates, curl]
+    update_cache: yes
+
+- name: add k8s repo
+  shell: |
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
+  args:
+    creates: /etc/apt/keyrings/kubernetes.gpg
+
+- name: install k8s package
+  apt:
+    name: [kubelet, kubeadm, kubectl, containerd]
+    update_cache: yes
+
+- name: configure container
+  shell: |
+    mkdir -p /etc/containerd
+    containerd config default > /etc/containerd/config.toml
+    sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+    systemctl restart containerd
+
+- name: enable ip forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
