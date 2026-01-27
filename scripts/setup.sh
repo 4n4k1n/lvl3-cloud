@@ -17,11 +17,11 @@ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
 
 # Clone lvl3-cloud repository
 echo "Cloning lvl3-cloud repository..."
-sudo -u stack git clone https://github.com/4n4k1n/lvl3-cloud.git /opt/stack/lvl3-cloud
+sudo -i -u stack git clone https://github.com/4n4k1n/lvl3-cloud.git /opt/stack/lvl3-cloud
 
 # Clone devstack repository
 echo "Cloning devstack repository..."
-sudo -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack
+sudo -i -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack
 
 # Detect host IP (first IP from hostname -I)
 echo "Detecting host IP address..."
@@ -30,20 +30,20 @@ echo "Using HOST_IP: $HOST_IP"
 
 # Copy local.conf template and replace HOST_IP
 echo "Copying and configuring local.conf template..."
-sudo -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf
+sudo -i -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf
 sudo sed -i "s/^HOST_IP=.*/HOST_IP=$HOST_IP/" /opt/stack/devstack/local.conf
 
-# Run stack.sh as stack user
+# Run stack.sh as stack user (with proper HOME environment)
 echo "Running stack.sh (this will take 15-30 minutes)..."
-sudo -u stack /opt/stack/devstack/stack.sh
+sudo -i -u stack bash -c "cd /opt/stack/devstack && ./stack.sh"
 
 echo ""
 echo ""
 echo "================================"
 
-#Run unit tests
-echo "Running unit tests..."
-cd /opt/stack/devstack && sudo -u stack ./run_tests.sh
+# TODO: Run unit tests (script not yet implemented)
+# echo "Running unit tests..."
+# cd /opt/stack/devstack && sudo -i -u stack ./run_tests.sh
 
 # setup cluster
 echo "Setup the k8s cluster..."
