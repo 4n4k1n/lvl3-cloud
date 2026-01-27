@@ -23,10 +23,33 @@
     mkdir -p /etc/containerd
     containerd config default > /etc/containerd/config.toml
     sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+    sed -i 's|sandbox_image = "registry.k8s.io/pause:3.8"|sandbox_image = "registry.k8s.io/pause:3.9"|' /etc/containerd/config.toml
     systemctl restart containerd
+
+- name: load br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: ensure br_netfilter loads on boot
+  copy:
+    content: "br_netfilter"
+    dest: /etc/modules-load.d/br_netfilter.conf
 
 - name: enable ip forwarding
   sysctl:
     name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+
+- name: enable bridge-nf-call-iptables
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: '1'
+    sysctl_set: yes
+
+- name: enable bridge-nf-call-ip6tables
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
     value: '1'
     sysctl_set: yes
