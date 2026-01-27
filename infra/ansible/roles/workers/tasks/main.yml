@@ -1,0 +1,11 @@
+- name: copy join command
+  copy:
+    src: /tmp/k8s-join.sh
+    dest: /tmp/join.sh
+    mode: '0755'
+
+- name: join cluster
+  shell: bash /tmp/join.sh
+  args:
+    creates: /etc/kubernetes/kubelet.conf
+    
