@@ -47,3 +47,10 @@ resource "openstack_networking_secgroup_rule_v2" "icmp" {
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.k8s_secgroup.id
 }
+
+resource "openstack_networking_secgroup_rule_v2" "k8s_internal" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  remote_ip_prefix  = "192.168.100.0/24"
+  security_group_id = openstack_networking_secgroup_v2.k8s_secgroup.id
+}
