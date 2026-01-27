@@ -3,6 +3,7 @@ resource "openstack_compute_instance_v2" "k8s_control_plane" {
 	flavor_name = "k8s.control"
 	image_id = data.openstack_images_image_v2.ubuntu.id
 	key_pair = "demo-key"
+	security_groups = [openstack_networking_secgroup_v2.k8s_secgroup.name]
 
 	network {
 		uuid = openstack_networking_network_v2.k8s_net.id
@@ -15,6 +16,7 @@ resource "openstack_compute_instance_v2" "k8s_worker" {
 	flavor_name = "k8s.worker"
 	image_id = data.openstack_images_image_v2.ubuntu.id
 	key_pair = "demo-key"
+	security_groups = [openstack_networking_secgroup_v2.k8s_secgroup.name]
 
 	network {
 		uuid = openstack_networking_network_v2.k8s_net.id
