@@ -45,10 +45,23 @@ echo "================================"
 # echo "Running unit tests..."
 # cd /opt/stack/devstack && sudo -i -u stack ./run_tests.sh
 
+# Install Terraform
+echo "Installing Terraform..."
+sudo apt-get update
+sudo apt-get install -y gnupg software-properties-common
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt-get update
+sudo apt-get install -y terraform
+
+# Install Ansible
+echo "Installing Ansible..."
+sudo apt-get install -y ansible
+
 # setup cluster
 echo "Setup the k8s cluster..."
 chmod +x /opt/stack/lvl3-cloud/scripts/*
-/opt/stack/lvl3-cloud/scripts/cluster.sh
+sudo -i -u stack /opt/stack/lvl3-cloud/scripts/cluster.sh
 
 echo ""
 echo ""
