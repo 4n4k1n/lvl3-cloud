@@ -1,3 +1,5 @@
+**/*.vscode
+
 **/*.tfstate 
 **/*.tfstate.backup
 **/.terraform/
