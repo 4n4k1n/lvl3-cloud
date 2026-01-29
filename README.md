@@ -1,14 +1,94 @@
 # lvl3-cloud
 
-## Installation
+Automated deployment of OpenStack (DevStack) with a Kubernetes cluster on top using Terraform and Ansible.
 
-1. Clone or download this repository
-2. Create your `local.config.template` file (see example below)
-3. Run the setup script:
+## Quick Start
+
 ```bash
 curl -L https://raw.githubusercontent.com/4n4k1n/lvl3-cloud/refs/heads/main/scripts/setup.sh | bash
 ```
-## Container Diagram
+
+## Prerequisites
+
+- Ubuntu/Debian Linux with 8GB+ RAM, 4+ CPU cores
+- KVM/Libvirt support
+- SSH keypair at `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`
+
+## Project Structure
+
+```
+lvl3-cloud/
+├── scripts/           # Deployment scripts
+├── infra/
+│   ├── terraform/k8s/ # Infrastructure provisioning
+│   └── ansible/       # Cluster configuration
+└── local.conf.template
+```
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `setup.sh` | Main entry point - deploys entire stack (DevStack + K8s) |
+| `cluster.sh` | Runs Terraform and Ansible to provision K8s cluster |
+| `create_k8s_flavor.sh` | Creates OpenStack VM flavors for K8s nodes |
+| `create_ubuntu_image.sh` | Downloads and registers Ubuntu 22.04 in Glance |
+| `create_demo_vm.sh` | Spins up a test VM to verify OpenStack works |
+| `remove_demo_vm.sh` | Cleans up the demo VM |
+
+## Terraform
+
+Provisions the infrastructure on OpenStack for the Kubernetes cluster.
+
+| Resource | Description |
+|----------|-------------|
+| Flavors | Control plane (2 vCPU, 6GB RAM), Worker (1 vCPU, 4GB RAM) |
+| Image | Ubuntu 22.04 cloud image |
+| Keypair | SSH key from host for VM access |
+| Network | Private network (192.168.100.0/24) with router to external |
+| Security Groups | SSH, ICMP, and internal cluster traffic |
+| Floating IPs | Public IPs for external access to VMs |
+| Instances | 1 control plane + N worker nodes |
+| Inventory | Generates Ansible inventory from VM IPs |
+
+## Ansible
+
+Configures Kubernetes on the provisioned VMs.
+
+| Role | Target | Tasks |
+|------|--------|-------|
+| `common` | All nodes | Disable swap, install kubelet/kubeadm/kubectl, configure containerd, enable IP forwarding and bridge-nf-call |
+| `control_plane` | Master | Initialize cluster, setup kubectl, install Flannel CNI, generate join command |
+| `workers` | Workers | Copy join command from master, join the cluster |
+
+## Usage
+
+```bash
+# SSH into control plane
+ssh ubuntu@<control-plane-ip>
+kubectl get nodes
+
+# Horizon dashboard
+http://<host-ip>/dashboard
+# Login: admin / secret
+
+# OpenStack CLI
+source /opt/stack/devstack/openrc admin admin
+openstack server list
+```
+
+## Cleanup
+
+```bash
+# Destroy K8s cluster
+cd infra/terraform/k8s && terraform destroy
+
+# Stop DevStack
+cd /opt/stack/devstack && ./unstack.sh
+```
+
+## Architecture
+
 ```mermaid
 flowchart TB
  subgraph Setup["Setup Script"]
