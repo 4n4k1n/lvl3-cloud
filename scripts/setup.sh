@@ -17,11 +17,11 @@ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
 
 # Clone lvl3-cloud repository
 echo "Cloning lvl3-cloud repository..."
-sudo -i -u stack git clone https://github.com/4n4k1n/lvl3-cloud.git /opt/stack/lvl3-cloud
+sudo -i -u stack git clone https://github.com/4n4k1n/lvl3-cloud.git /opt/stack/lvl3-cloud < /dev/null
 
 # Clone devstack repository
 echo "Cloning devstack repository..."
-sudo -i -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack
+sudo -i -u stack git clone https://opendev.org/openstack/devstack /opt/stack/devstack < /dev/null
 
 # Detect host IP (first IP from hostname -I)
 echo "Detecting host IP address..."
@@ -30,12 +30,12 @@ echo "Using HOST_IP: $HOST_IP"
 
 # Copy local.conf template and replace HOST_IP
 echo "Copying and configuring local.conf template..."
-sudo -i -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf
+sudo -i -u stack cp /opt/stack/lvl3-cloud/local.conf.template /opt/stack/devstack/local.conf < /dev/null
 sudo sed -i "s/^HOST_IP=.*/HOST_IP=$HOST_IP/" /opt/stack/devstack/local.conf
 
 # Run stack.sh as stack user (with proper HOME environment)
 echo "Running stack.sh (this will take 15-30 minutes)..."
-sudo -i -u stack bash -c "cd /opt/stack/devstack && ./stack.sh"
+sudo -i -u stack bash -c "cd /opt/stack/devstack && ./stack.sh" < /dev/null
 
 echo ""
 echo ""
@@ -61,7 +61,7 @@ sudo apt-get install -y ansible
 # setup cluster
 echo "Setup the k8s cluster..."
 chmod +x /opt/stack/lvl3-cloud/scripts/*
-sudo -i -u stack /opt/stack/lvl3-cloud/scripts/cluster.sh
+sudo -i -u stack /opt/stack/lvl3-cloud/scripts/cluster.sh < /dev/null
 
 echo ""
 echo ""
